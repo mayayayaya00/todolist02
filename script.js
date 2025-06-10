@@ -63,26 +63,33 @@ taskInput.addEventListener('keypress', function (event) {
   if (event.key === 'Enter') addTask();
 });
 
+function getMemoKey() {
+  let date;
+  if (currentViewMode === 'week') {
+    // 週表示：週の最初の日を基準にする（例: 2024-06-10）
+    const now = new Date(today.getTime());
+    now.setDate(now.getDate() + weekOffset * 7);
+    const weekStart = new Date(now.getTime());
+    weekStart.setDate(now.getDate() - now.getDay());
+    date = weekStart;
+    return `week/${formatDateForKey(date)}`;
+  } else {
+    // 月表示：月を基準にする（例: 2024-06）
+    date = new Date(today.getFullYear(), today.getMonth() + weekOffset, 1);
+    return `month/${formatDateForKey(date).substring(0, 7)}`;
+  }
+}
+
 memoArea.addEventListener('input', function () {
   const key = getMemoKey();
   firebase.database().ref('memos/' + key).set(memoArea.value);
 });
 
-function getMemoKey() {
-  let date;
-  if (currentViewMode === 'week') {
-    const now = new Date(today.getTime());
-    now.setDate(now.getDate() + weekOffset * 7);
-    date = now;
-  } else {
-    date = new Date(today.getFullYear(), today.getMonth() + weekOffset, 1);
-  }
-  return `${date.getFullYear()}-${('0'+(date.getMonth()+1)).slice(-2)}`;
-}
-
 function showMemo() {
   const key = getMemoKey();
-  memoMonth.textContent = key.replace('-', '年') + '月';
+  memoMonth.textContent = currentViewMode === 'week'
+    ? `${formatDateYMD(new Date(key.split('/')[1]))}週のメモ`
+    : `${key.split('/')[1].replace('-', '年')}月のメモ`;
   firebase.database().ref('memos/' + key).on('value', (snapshot) => {
     memoArea.value = snapshot.val() || '';
   });
