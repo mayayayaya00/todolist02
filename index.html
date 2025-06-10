@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoカレンダー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+      <div class="header-row">
+        <h1>ToDoカレンダー</h1>
+        <div class="memo-box">
+          <div class="memo-title">
+            <span id="memoMonth"></span>のメモ
+          </div>
+          <textarea id="memoArea" placeholder="この月のメモを書いてください"></textarea>
+        </div>
+      </div>
+        
+      <div class="controls">
+          <button id="prevBtn">＜</button>
+          <span id="viewTitle"></span>
+          <button id="nextBtn">＞</button>
+          <select id="viewMode">
+              <option value="week">週表示</option>
+              <option value="month">月表示</option>
+          </select>
+      </div>
+
+      <div id="progressBarBox">
+          <div class="progress-summary"></div>
+          <div class="progress-bar-bg">
+              <div class="progress-bar-fill"></div>
+          </div>
+      </div>
+
+      <div class="input-area">
+          <input type="text" id="taskInput" placeholder="新しいタスク">
+          <input type="date" id="taskDate">
+          <div class="priority-select">
+              <button class="priority-btn high active" data-priority="高">高</button>
+              <button class="priority-btn medium" data-priority="中">中</button>
+              <button class="priority-btn low" data-priority="低">低</button>
+          </div>
+          <div class="repeat-options">
+              <select id="repeatType">
+                  <option value="none">繰り返しなし</option>
+                  <option value="daily">毎日</option>
+                  <option value="weekly">毎週</option>
+                  <option value="monthly">毎月</option>
+              </select>
+              <input type="number" id="repeatCount" min="1" max="12" value="1" class="repeat-input">
+              <span>回分</span>
+          </div>
+          <button id="addBtn">追加</button>
+      </div>
+
+      <div id="calendar"></div>
+    </div>
+    <!-- Firebase SDKの読み込み -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script>
+      // Firebase設定（Configを貼り付けてください）
+      var firebaseConfig = {
+        apiKey: "AIzaSyDsFkiV8BwxPK9BZxDSm2SKn6MtwcVelhc",
+        authDomain: "todocalendar-c813b.firebaseapp.com",
+        databaseURL: "https://todocalendar-c813b-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "todocalendar-c813b",
+        storageBucket: "todocalendar-c813b.firebasestorage.app",
+        messagingSenderId: "197204031303",
+        appId: "1:197204031303:web:551d0a91c8f17d4a2bfe62"
+      };
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
